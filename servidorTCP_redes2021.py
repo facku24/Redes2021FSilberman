@@ -1,25 +1,36 @@
 from socket import * # Importo la libreria Sockets
 
-#Funcion auxiliar para invertir cadenas
-def invertString(elem:str):
-    return elem[::-1]
-#Defino el objeto socket con los protocolos IPV4 y TCP.
-server_socket = socket(AF_INET, SOCK_STREAM) 
-
-#Vinculo el socket creado a la red local, en el puerto 8000
-server_socket.bind(('localhost',8000))
-
-#Cola de espera que tendra el socket...
-server_socket.listen(5)
+class Server():
 
 
-print("Servidor creado exitosamente")
-#Establezco conexion con el socket del cliente, guardo su ddireccion...
-client_socket, direccion = server_socket.accept()
-print(f"Conexion establecida con {direccion}")
-client_socket.send(bytes(f"Conexion con servidor establecida!","utf-8"))
+    #Direccion del servidor... ('red', 'puerto')
+    def __init__(self):
+        self.server_address = ('localhost', 12000)
+        #Defino el objeto socket con los protocolos IPV4 y TCP.
+        self.server_socket = socket(AF_INET, SOCK_STREAM)
 
-while True:
-    #Recibo el mensaje del cliente, tambien declaro el tamaño del buffer (1024)
-    mensaje = client_socket.recv(1024).decode('utf-8')
-    client_socket.send(invertString(mensaje).encode('utf-8'))
+    def create(self) -> bool:
+            self.server_socket.bind(self.server_address)
+            self.server_socket.listen(5)
+            print("Servidor creado exitosamente!")
+    def connect(self):
+        client_socket, address = self.server_socket.accept()
+        print(f"Conexion establecida con exito en {address}")
+        while True:
+            message=''
+            print("Esperando al cliente")
+            message = client_socket.recv(1024).decode()
+            if(message!=''):
+                print(f"Mensaje reibido: {message}")
+                client_socket.send(self.invertString(message).encode())
+
+
+    #Funcion auxiliar para invertir cadenas
+    def invertString(self,elem:str):
+        return elem[::-1]
+
+if __name__ == '__main__':
+
+    server = Server()
+    server.create()
+    server.connect()   

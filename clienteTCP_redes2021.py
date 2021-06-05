@@ -1,22 +1,36 @@
-from socket import * # Importo la libreria Sockets
+from socket import * 
 
 class Client():
 
-    def __init__(self) -> None:
-        self.client_socket = socket(AF_INET, SOCK_STREAM)
+    def __init__(self):
+        self.client_address = 'localhost'
+        self.client_port = 14000
 
-        #Defino el objeto socket con los protocolos IPV4 y TCP.
+    def create_socket(self, adrss, port) -> socket:
+        client_socket = socket(AF_INET, SOCK_STREAM)  
+        client_socket.connect((adrss, port))
+        print("Socket cliente creado!")
+        return client_socket
+
+    def receive_data(self, socket:socket) -> str:
+        message = socket.recv(1024).decode()
+        return message
+
+    def send_data(self, socket:socket,data:str):
+        socket.send(data.encode())
+
+    def close_socket(self, socket:socket):
+        socket.close()
+
     def connect(self):
-        host = ('localhost',12000)
-        self.client_socket.connect(host)
-        print(f"Coneccion establecida en {host}")
+        client_socket:socket = self.create_socket(self.client_address, self.client_port)
         while True:
-            sentence = input("Ingrese string a revertir:")
-            if sentence!='':
-                self.client_socket.send(sentence.encode('utf-8'))
-                modified_sentence = self.client_socket.recv(1024).decode('utf-8')
-                if (modified_sentence!=''):
-                    print(f"Mensaje recibido: {modified_sentence}")
+            data = input("Ingrese string a revertir:")
+            if data!='':
+                self.send_data(client_socket,data)
+                received_data = self.receive_data(client_socket)
+                if (received_data!=''):
+                    print(f"Mensaje recibido: {received_data}")
                 else:
                     print("Mensaje enviado, esperando server...")
                     

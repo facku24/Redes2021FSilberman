@@ -9,7 +9,7 @@ import errno
 class Server():
 
     def __init__(self):
-        self.server_address = 'localhost'
+        self.server_address = '0.0.0.0'
         self.server_port = 10000
         self.BUFFER_SIZE = 1024
         self.current_files=[]

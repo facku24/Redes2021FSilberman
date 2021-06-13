@@ -8,7 +8,7 @@ class Server():
 
     def __init__(self):
         self.server_address = 'localhost'
-        self.server_port = 13000
+        self.server_port = 11000
         self.BUFFER_SIZE = 1024
         self.current_files=[]
 
@@ -58,12 +58,13 @@ class Server():
                             file_name = data[1]
                             self.cases[data[0]](self, file_name,client_socket)
                         except:
-                            pass
+                            FileNotFoundError
+                            
                 else:
                     self.send_data(f"Comando no valido!\nLista de comandos: {list(self.cases)}",client_socket)
             else:
                 self.send_data('Ingrese un valor!', client_socket)
-        
+
     def list_method(self):
 
         path = os.path.dirname(os.path.realpath(__file__))
@@ -76,7 +77,7 @@ class Server():
         for file in self.current_files:
 
             files = files + str(file) +'\n'
-            
+
         return files
 
     def get_method(self,file_name,client_socket:socket):
@@ -84,9 +85,7 @@ class Server():
         print(self.current_files)
         if file_name in self.current_files:
             print("El archivo existe en este directorio!")
-            file_size = os.path.getsize(file_name)
-            self.send_data(f"{file_name}",client_socket)
-            print(f"Tamaño del archivo: {file_size}")
+            self.send_data(file_name,client_socket)
             with open(file_name,'rb') as f:
                 while True:
                     print("Enviando...")
@@ -96,14 +95,14 @@ class Server():
                         print("Archivo enviado!")
                         f.close()
                         break
-                
+
         else:
             return "\nArchivo inexistente"
 
     def metadata_method(self):
         return "\nFunction not implemented yet..."
 
- 
+
     cases = {
 
     'LIST': list_method,
@@ -113,8 +112,8 @@ class Server():
 
     }
 
-            
+
 if __name__ == '__main__':
 
     server = Server()
-    server.connect()   
+    server.connect()    

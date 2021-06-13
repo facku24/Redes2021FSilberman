@@ -1,3 +1,4 @@
+
 import os
 from socket import * 
 
@@ -6,7 +7,7 @@ class Client():
 
     def __init__(self):
         self.client_address = 'localhost'
-        self.client_port = 13000
+        self.client_port = 11000
         self.BUFFER_SIZE = 1024
 
     def create_socket(self, adrss, port) -> socket:
@@ -42,10 +43,10 @@ class Client():
                     self.send_data(client_socket,data)
                     file_name = self.receive_data(client_socket)
                     file_name = os.path.basename(file_name)
-                    
+
                     try:
                         with open(file_name, 'wb') as f:
-                            
+
                             while True:
                                 bytes_read = client_socket.recv(self.BUFFER_SIZE )
                                 print(f"Recibiendo archivo...{len(bytes_read)}")
@@ -62,7 +63,7 @@ class Client():
                     self.send_data(client_socket,data)
                     received_data = self.receive_data(client_socket)
                     print(f"\nRespuesta server:",received_data)
-     
+
 if __name__ == '__main__':
     client = Client()
-    client.connect()
+    client.connect() 

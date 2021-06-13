@@ -1,5 +1,4 @@
 import os
-from posix import PRIO_USER
 from socket import * 
 
 
@@ -7,7 +6,7 @@ class Client():
 
     def __init__(self):
         self.client_address = 'localhost'
-        self.client_port = 10000
+        self.client_port = 14000
         self.BUFFER_SIZE = 1024
 
     def create_socket(self, adrss, port) -> socket:

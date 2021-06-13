@@ -1,0 +1,8 @@
+[PROCESING] Message from  ('127.0.0.1', 53762)  :  ['']
+[CONNECTING] New client connected ('127.0.0.1', 53796)
+[PROCESING] Message from  ('127.0.0.1', 53796)  :  ['ASDADS']
+[PROCESING] Message from  ('127.0.0.1', 53796)  :  ['ASDASD']
+[PROCESING] Message from  ('127.0.0.1', 53796)  :  ['asdasd']
+[PROCESING] Message from  ('127.0.0.1', 53796)  :  ['asdasd']
+[PROCESING] Message from  ('127.0.0.1', 53796)  :  ['ASDASDA']
+[PROCESING] Message from  ('127.0.0.1', 53796)  :  ['asdasdad']

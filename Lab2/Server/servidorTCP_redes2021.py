@@ -4,13 +4,13 @@ from socket import *
 import os
 from os.path import isfile
 import threading
-import errno
+from datetime import datetime, timezone
 
 class Server():
 
     def __init__(self):
         self.server_address = '0.0.0.0'
-        self.server_port = 10000
+        self.server_port = 14000
         self.BUFFER_SIZE = 1024
         self.current_files=[]
         self.clients = []
@@ -29,7 +29,7 @@ class Server():
         socket.send(data.encode())
 
     def close_socket(self, socket:socket):
-        print(f"[CLOSING] Closing connection with client")
+        print(self.save_msj(str("[CLOSING] Closing connection with client"+socket.getsockname())))
         socket.close()
 
     def connection(self, client_socket, addr):
@@ -40,7 +40,7 @@ class Server():
                 print("[PROCESING] Waiting for client...")
                 data = self.receive_data(client_socket).split(' ')
                 if(len(data)!=0):
-                    print(f"[PROCESING] Message from {addr}: {data}")
+                    print(self.save_msj(str(f"[PROCESING] Message from  {addr}  :  {data}")))
                     if data == 'CLOSE':
                         self.close_socket(client_socket)
                         break
@@ -53,7 +53,7 @@ class Server():
                         if len(data)==2:
                             try:
                                 file_name = data[1]
-                                self.cases[data[0]](self, file_name,client_socket)
+                                self.cases[data[0]](self, file_name ,client_socket)
                             except:
                                 pass
                     else:
@@ -77,10 +77,10 @@ class Server():
     def update_clients(self, addr):
 
         if addr in self.clients:
-            print(f"[DISCONECTING] Ending connection with {addr}")
+            print(self.save_msj(str(f"[DISCONECTING] Ending connection with {addr}")))
             self.clients.remove(addr)
         else:
-            print (f"[CONNECTING] New client connected {addr}")
+            print (self.save_msj(str(f"[CONNECTING] New client connected {addr}")))
             self.clients.append(addr)
             print(f"[PROCESING] Clients connected : {len(self.clients)}")
     
@@ -118,9 +118,15 @@ class Server():
         else:
             self.send_data('NON OK',client_socket)
 
-    def metadata_method(self):
-        return "\nFunction not implemented yet..."
-
+    def metadata_method(self, file_name ,client_socket):
+        print("Metadata!")
+        stat_result = os.stat(file_name)
+        modified = datetime.fromtimestamp(stat_result.st_mtime, tz=timezone.utc)
+        last_access = datetime.fromtimestamp(stat_result.st_atime, tz=timezone.utc)
+        size = stat_result.st_size
+        meta = (f'Last time access: {last_access} \nLast time modified: {modified} \nSize in bytes: {size}')
+        print(meta)
+        self.send_data(meta,client_socket)
     # This function search for all files in server directory and update them in current_files..
     def scan (self):
         path = os.path.dirname(os.path.realpath(__file__))
@@ -131,6 +137,15 @@ class Server():
         self.scan()
         return file_name in self.current_files
 
+    def save_msj(self, message):
+        try:
+            f = open('historial.txt', 'a')
+            with f:
+                f.write (message + '\n')
+                f.close()
+        except:
+            print("[ERROR] Error during saving data from client")
+        return message
 
     cases = {
 

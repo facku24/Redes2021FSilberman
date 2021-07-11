@@ -1,0 +1,40 @@
+-------------------------------------------------------------------------
+						DEVOLUCION LABORATORIO 2
+-------------------------------------------------------------------------
+NOMBRE: Silberman, Facundo
+CALIFICACIÓN: 0.56 (No Aprobado)
+Recordar: La calificación del laboratorio va de 0 (No Aprobado) a 1
+ (Aprobado). La calificación no es definitiva y puede modificarse a 
+ medida que el laboratorio sea mejorado.
+-------------------------------------------------------------------------
+							COMENTARIOS
+-------------------------------------------------------------------------
+	* Los puntos marcados en el laboratorio uno fueron aplicados correc-
+	tamente. 
+	* Buen manejo de comando incorrectos.
+	* OBSERVACION: Permite más conexiones que las seteadas en 'listen()'
+	* No hay un archivo de constantes ni parseo de parámetros, como se 
+	especificó en el enunciado.
+
+-------------------------------------------------------------------------
+							CODIFICACION (1 - Aprobado)
+-------------------------------------------------------------------------
+	* Muy buen estilo de condificación y de manejo de clases.
+
+-------------------------------------------------------------------------
+						FUNCIONAMIENTO (0.3 - No Aprobado)
+-------------------------------------------------------------------------
+	* El comando METADATA sigue fallando al igual que en el laboratorio an-
+	terior.
+	* El comando CLOSE sigue fallando en el lado del servidor.
+	* El comando GET no funciona adecuadamente. 
+		* Por ejemplo 'GET car3.jpeg' rompe el pipe del lado del servidor y 
+		el cliente queda en un bucle infinito esperando por mensajes.
+		* El caso 'GET historial.txt' no transmite nada. No rompe el servidor
+		pero si deja al cliente en un bucle infinito.
+
+-------------------------------------------------------------------------
+						ENTREGA (0.4 - No Aprobado)
+-------------------------------------------------------------------------
+* Si bien fue entregado a tiempo, no estaría funcionado completamente bien.
+  
